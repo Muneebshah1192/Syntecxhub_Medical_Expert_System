@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syntecxhub Rule Based Expert System</title>
+
+    
+    <!-- Tom Select -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="card">
+    <h1>Syntecxhub</h1>
+    <div class="subtitle">Rule-Based Medical Expert System</div>
+
+    <form method="POST">
+        <label>Select Symptoms</label>
+
+        <select id="symptom-select" name="symptoms" multiple>
+            {% for symptom in all_symptoms %}
+                <option value="{{ symptom }}">
+                    {{ symptom.replace('_', ' ').title() }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn">Diagnose</button>
+    </form>
+
+    {% if diagnosis %}
+    <div class="result">
+        <div class="result-title">Diagnosis Result</div>
+
+        <div class="diagnosis {{ severity }}">
+            {{ diagnosis }}
+        </div>
+
+        <div style="font-size:0.85rem; color:#6b7280;">
+            Conclusion inferred using forward chaining.
+        </div>
+
+        <details>
+            <summary>View Reasoning Steps</summary>
+            <ul>
+                {% for log in logs %}
+                    <li>{{ log }}</li>
+                {% endfor %}
+            </ul>
+        </details>
+    </div>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+<script>
+    new TomSelect("#symptom-select", {
+        plugins: ['remove_button'],
+        create: false
+    });
+</script>
+
+</body>
+</html>
