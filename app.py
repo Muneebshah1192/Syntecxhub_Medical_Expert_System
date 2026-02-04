@@ -1,8 +1,9 @@
+# SyntecxHub Medical Expert System
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# ------------------ KNOWLEDGE BASE ------------------
+#                    KNOWLEDGE BASE 
 
 RULES = [
     {"name": "Common Cold", "symptoms": ["runny_nose", "sneezing", "sore_throat", "cough"]},
@@ -16,7 +17,7 @@ RULES = [
     {"name": "Nipah Virus", "symptoms": ["fever", "seizures", "difficulty_breathing", "unconsciousness","severe_headache","paralysis","jerky_movements","personality_changes" ]}
 ]
 
-# ------------------ FACT BASE ------------------
+#                      FACT BASE 
 
 ALL_SYMPTOMS = []
 
@@ -27,7 +28,7 @@ for rule in RULES:
 
 ALL_SYMPTOMS.sort()
 
-# ------------------ INFERENCE ENGINE ------------------
+#                     INFERENCE ENGINE 
 
 def analyze_symptoms(user_symptoms):
     logs = []
@@ -35,7 +36,7 @@ def analyze_symptoms(user_symptoms):
     best_count = 0
     exact_match_found = False
 
-    # Forward chaining: check each rule one by one
+    # Forward chaining applied here
     for rule in RULES:
         disease = rule["name"]
         rule_symptoms = rule["symptoms"]
@@ -63,8 +64,7 @@ def analyze_symptoms(user_symptoms):
             best_match = disease
             best_count = match_count
 
-    # ------------------ CONCLUSION ------------------
-
+    #                      CONCLUSION 
     if exact_match_found:
         diagnosis = best_match
         severity = "high"
@@ -77,7 +77,7 @@ def analyze_symptoms(user_symptoms):
 
     return diagnosis, logs, severity
 
-# ------------------ FLASK ROUTES ------------------
+#                     FLASK ROUTES 
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
